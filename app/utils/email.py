@@ -1,28 +1,29 @@
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
-from pydantic import EmailStr
 import os
-from dotenv import load_dotenv
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
-load_dotenv()  
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
+EMAIL_USERNAME = os.getenv("EMAIL_USERNAME")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_FROM_NAME = os.getenv("EMAIL_FROM_NAME")
 
-conf = ConnectionConfig(
-    MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
-    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
-    MAIL_FROM=os.getenv("MAIL_FROM"),
-    MAIL_PORT=int(os.getenv("MAIL_PORT")),
-    MAIL_SERVER=os.getenv("MAIL_SERVER"),
-    MAIL_TLS=os.getenv("MAIL_TLS") == "True",
-    MAIL_SSL=os.getenv("MAIL_SSL") == "True",
-    USE_CREDENTIALS=True,
-    VALIDATE_CERTS=True
-)
+def send_email(to_email: str, subject: str, body: str):
+    try:
+        msg = MIMEMultipart()
+        msg["From"] = f"{EMAIL_FROM_NAME} <{EMAIL_USERNAME}>"
+        msg["To"] = to_email
+        msg["Subject"] = subject
 
-async def send_otp_email(email: EmailStr, otp: str):
-    message = MessageSchema(
-        subject="Your OTP Code",
-        recipients=[email],
-        body=f"Your OTP is: {otp}",
-        subtype="plain"
-    )
-    fm = FastMail(conf)
-    await fm.send_message(message)
+        msg.attach(MIMEText(body, "html"))
+
+        with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
+            server.starttls()
+            server.login(EMAIL_USERNAME, EMAIL_PASSWORD)
+            server.sendmail(EMAIL_USERNAME, to_email, msg.as_string())
+
+        print(f"[EMAIL SENT] to {to_email}")
+    except Exception as e:
+        print(f"[EMAIL ERROR] {str(e)}")
+        raise
