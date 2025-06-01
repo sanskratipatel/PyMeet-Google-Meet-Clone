@@ -16,3 +16,5 @@
 
 from fastapi import FastAPI 
 
+from routers import meetings
+app.include_router(meetings.api)

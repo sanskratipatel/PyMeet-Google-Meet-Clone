@@ -1,5 +1,5 @@
 import random
-from .cache import save_otp, get_otp as retrieve_otp
+from .cache import save_otp, get_otp as retrieve_otp, invalidate_otp
 from app.utils.otp import save_otp, get_otp as retrieve_otp
 from .email import send_email
 

@@ -15,4 +15,5 @@ def can_refresh_token(data:dict, expires_delta: timedelta):
     to_encode = data.copy() 
     expire = datetime.utcnow() + expires_delta 
     to_encode.update({"exp" : expire}) 
-    return jwt.encode(to_encode, JWT_REFRESH_SECRET_KEY, algorithm="HS256")
+    return jwt.encode(to_encode, JWT_REFRESH_SECRET_KEY, algorithm="HS256") 
+

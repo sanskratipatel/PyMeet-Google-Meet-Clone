@@ -14,3 +14,4 @@ async def verify_jwt(request: Request):
         request.state.user = payload
     except JWTError:
         raise HTTPException(status_code=403, detail="Invalid token")
+

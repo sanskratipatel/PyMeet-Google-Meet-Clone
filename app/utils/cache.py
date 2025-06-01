@@ -1,7 +1,7 @@
 import time
 from typing import Dict, Tuple
 
-otp_cache: Dict[str, Tuple[str, float]] = {}  # {email: (otp, expiry_time)}
+otp_cache: Dict[str, Tuple[str, float]] = {} 
 
 def save_otp(email: str, otp: str, ttl: int = 600):
     """

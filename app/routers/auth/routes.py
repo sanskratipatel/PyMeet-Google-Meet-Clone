@@ -70,6 +70,7 @@ from app.utils.jwt import create_access_token, create_refresh_token
 @api.post("/login", response_model=MessageResponse)
 def login_user(data: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data.email.lower()).first()
+
     if not user or not pwd_context.verify(data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     if not user.is_verified:
@@ -90,11 +91,10 @@ def login_user(data: LoginRequest, db: Session = Depends(get_db)):
     } 
 
 
-
 @api.post("/reset-password", response_model=MessageResponse)
 def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
     if not verify_otp(data.email, data.otp):
-        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
+        raise HTTPException(status_code=400, detail="Invalid or expired OTP") 
     user = db.query(User).filter(User.email == data.email.lower()).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -103,11 +103,11 @@ def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
     return {"message": "Password reset successfully"}
 
 
-
 @api.post("/forgot-password", response_model=MessageResponse)
 def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data.email.lower()).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     send_otp_to_user(data.email)
-    return {"message": "OTP sent to your email"}
+    return {"message": "OTP sent to your email"} 
+
