@@ -1,11 +1,3 @@
-# from fastapi import FastAPI
-# from app.db.database import Base, engine
-# from app.routers import auth
-# from fastapi.staticfiles import StaticFiles
-# from dotenv import load_dotenv
-# import os
-
-# load_dotenv()
 
 # app = FastAPI()
 # Base.metadata.create_all(bind=engine)
