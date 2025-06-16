@@ -31,7 +31,7 @@ The project is structured as follows:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/yourusername/pymeet.git
+  [ git clone https://github.com/yourusername/pymeet.git](https://github.com/sanskratipatel/PyMeet-Google-Meet-Clone.git)
    cd pymeet
    ```
 
