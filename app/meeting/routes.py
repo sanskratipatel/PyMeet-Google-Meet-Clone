@@ -7,7 +7,7 @@ from schemas.meeting_schemas import CreateMeetingRequest, JoinMeetingRequest, Se
 from app.utils.jwt import get_current_user
 from datetime import datetime
 import random, string
-
+from middleware.jwt_middleware import verify_jwt
 api = APIRouter(prefix="/meetings", tags=["Meetings"])
 
 def generate_code(length=8):
